@@ -405,7 +405,9 @@ function afficherDetailsScore(citation) {
   } else {
     console.log(citation.scores)
     const str = Object.entries(citation.scores).map(n => {
-      
+      // met behulp van index het id van de <th> kolom 3 wijzigen
+      console.log(index)
+
       quoteDansDetailsScoreTableaux(n[0]);
       return '<tr><th>' + n[1].wins + '</th><th>' + n[1].looses + '</th><th id="insertQuote"></th></tr>';
     })
