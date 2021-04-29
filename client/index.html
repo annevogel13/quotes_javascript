@@ -1,0 +1,155 @@
+<html>
+
+<head>
+  <title>Duels de citations</title>
+  <link rel="stylesheet" href="extraCSS.css" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a id="btn-open-login-modal" class="button is-light">
+            Utilisateur
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <h1 class="title">Duels de citations</h1>
+      <p class="subtitle">Quelle est votre citation favorite ?</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="tabs is-centered">
+      <ul>
+        <li class="is-active" id="tab-duel">
+          <a>Voter</a>
+        </li>
+        <li id="tab-tout"><a>Toutes les citations</a></li>
+      </ul>
+    </div>
+    <div class="columns" id="div-duel">
+      <div class="column">
+        <div class="card">
+          <div class="columns card-content">
+            <div class="column is-one-third">
+              <div class="card-image" >
+                <figure class="image" id="image1"></figure> 
+              </div>
+            </div>
+            <div class="column is-8">
+              <p class="title" id="citation1"></p>
+              <p class="subtitle" id="character1"></p>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="columns is-centered" id="voteGauche">
+              <p class="button is-danger">Voter pour la citation de gauche !</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+          <div class="columns card-content">
+            <div class="column is-8">
+              <p class="title" id="citation2"></p>
+              <p class="subtitle" id="character2"></p>
+            </div>
+            <div class="column is-one-third">
+              <div class="card-image">
+                <figure class="image" id="image2"></figure>
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="columns is-centered" id="voteDroite">
+              <p class="button is-info">Voter pour la citation de droite !</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h5>Détails</h5>
+        <br>
+        <table class="table_details">
+          <thread>
+            <tr>
+              <th>Champs</th>
+              <th>Informations</th>
+            </tr>
+          </thread>
+          <tbody id="texte_modal">
+          </tbody>
+        </table>
+       
+        <div id="image_modal"></div>
+        <div
+          <p id="text_score"></p>
+          <table  id="table_score">
+
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="div-tout">
+      <table class="table">
+        <thead>
+          <tr>
+            <th id="test" onclick="">Classement</th>
+            <th id="renverse2" onclick="tableaux('table_body', 2, true)">Personnage</th>
+            <th id="renverse1" onclick="tableaux('table_body', 1, true)">Citation</th>
+            <th>Details</th>
+          </tr>
+          <tr>
+            <th>
+              <div class="dropdown">
+                <button class="dropbtn">Choix de classement</button>
+                <div class="dropdown-content">
+                  <a onclick="tableaux('table_body', 8, false, 0)">WinsAbsolu</a>
+                  <a onclick="tableaux('table_body', 8, false, 1)">Ratio wins/looses</a>
+                </div>
+              </div>
+            </th>
+            <th><input type="text" id="inputCharacter" onkeyUp='tableaux("table_body", 2)' placeholder="Saisi une mot">
+            </th>
+            <th><input type="text" id="inputCitation" onkeyUp='tableaux("table_body", 1)' placeholder="Saisi une mot">
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="table_body">
+
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <div id="mdl-login" class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Utilisateur</p>
+        <button id="btn-close-login-modal1" class="delete" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <p id="elt-affichage-login">
+          Ici, il faudrait afficher le login de l'utilisateur.
+        </p>
+      </section>
+      <footer class="modal-card-foot" style="justify-content: flex-end">
+        <button id="btn-close-login-modal2" class="button">Fermer</button>
+      </footer>
+    </div>
+  </div>
+  <script src="client.js"></script>
+</body>
+
+</html>
