@@ -73,7 +73,7 @@ function registerTabClick(etatCourant) {
 ////////////////////////////////////////////////////////////////////
 
 /**
- * Fait une requête GET authentifiée sur /citations
+ * @brief Fait une requête GET authentifiée sur /citations
  * @returns les citations ou une message d'erreur
  */
 function fetchTousCitations() {
@@ -199,7 +199,6 @@ function total(total, n) {
  * @returns le nombre de victoires absolu 
  */
 function nbWinAbsolu(n) {
-  // console.log(Object.values(n[1])[1].wins);
   const win = Object.values(n[1])[1].wins;
   const looses = Object.values(n[1])[1].looses;
 
@@ -381,58 +380,66 @@ function afficherDetails(id) {
   console.log("Afficher details de : " + id);
 
   return fetchUneCitationById(id).then((citation) => {
+    afficherDetailsScore(citation);
     const str = Object.entries(citation).map(n => {
 
-      if ((n[0] !== "_id") && n[0] !=="scores" && (n[0] !== "__v")) {
+      if ((n[0] !== "_id") && n[0] !== "scores" && (n[0] !== "__v")) {
         if (n[0] == "image") {
           document.getElementById("image_modal").innerHTML = '<img id="image_modal" src="' + n[1] + '" alt="image">';
         } else return '<tr>' + '<th>' + n[0] + ':' + '</th>' + '' + '<th>' + n[1] + '</th>' + '</tr>';
 
       }
     });
-    //afficherDetailsScore(citation);
+    afficherDetailsScore(citation);
     document.getElementById("texte_modal").innerHTML = str.join('');
     modale(id);
   });
 }
 
 function afficherDetailsScore(citation) {
-  console.log("afficher details score")
-  
+  console.log("afficher details sur le tableaux score")
+
   if (citation.scores == undefined) {
     console.log("champs scores is undefined")
-    document.getElementById("text_score").innerHTML= "Cette citation n'a pas encore participe dans une duel";
+    document.getElementById("text_score").innerHTML = "Cette citation n'a pas encore participe dans une duel";
   } else {
-    console.log(citation.scores); 
+    console.log(citation.scores)
     const str = Object.entries(citation.scores).map(n => {
       
-      const win =  n[1].wins; 
-      const loose = n[1].looses; 
-      const idQuote = n[0]//._id; 
-      const quote = fetchUneCitationById(idQuote).then((data => {
-        return '<tr><th>'+win+'</th><th>'+loose+'</th><th>'+data.quote+'</th></tr>';
-      }))
-      
-      return quote; 
-      
+      quoteDansDetailsScoreTableaux(n[0]);
+      return '<tr><th>' + n[1].wins + '</th><th>' + n[1].looses + '</th><th id="insertQuote"></th></tr>';
     })
-  
-    const strComplete = str.join('');
-    const enteteTable = '<thread><tr><th>numero de wins</th><th>numero de loose</th></tr></thread>'
-    document.getElementById("table_score").innerHTML = "<table>"+strComplete+"</table>";
-  }
 
+    document.getElementById("table_score").innerHTML = str.join('')
+  }
+}
+/**
+ * @brief fonction qui rempli le troisieme colone du tableaux 
+ * @param {string} n : avec le _id d'une citation 
+ */
+function quoteDansDetailsScoreTableaux(n) {
+  fetchUneCitationById(n).then(data => {
+    const strDejaLa = document.getElementById("insertQuote").innerText;
+    const strCourte = debutQuote(data.quote)
+    
+    if (strDejaLa.includes(strCourte) == false) { // pour assurer qu'on n'a pas plusieurs fois le meme quote 
+      document.getElementById("insertQuote").innerHTML = strDejaLa + strCourte;
+    }
+
+  })
 }
 
 /**
- * @brief fonction qui retourne le premiere trois mots d'une string  
+ * @brief fonction qui retourne le premiere moite d'une string 
  * @param {string} quote 
  * @returns le premiere trois mots d'une string
  */
-function troisMotsQuote(quote) {
+function debutQuote(quote) {
 
-  const arrQuote = quote.split(" ");
-  arrQuote.length = 3;
+  const arrQuote = quote.split(" "); // convert en array comme ca on peut compter le numero de mots 
+  const arrLength = arrQuote.length; // converser le longeur
+  const newArrLength = parseInt(0.5 * arrLength); // creer un integer pour le nouveau longeur 
+  arrQuote.length = newArrLength;
   return arrQuote.join(" ")
 }
 
