@@ -406,13 +406,18 @@ function afficherDetailsScore(citation) {
     console.log(citation.scores)
     const arrIds = Object.entries(citation.scores).map(p => p[1]); 
   //  console.log(arrIds)
-    const str = Object.entries(citation.scores).map(n => {
+    const str = Object.entries(citation.scores).map(n => { // map pour creer le tableaux avec le troisieme collone vide 
       const index = arrIds.indexOf(n[1]); // yessssss
-      quoteDansDetailsScoreTableaux(n[0], index);
-      return '<tr><th>' + n[1].wins + '</th><th>' + n[1].looses + '</th><th id="insertQuote'+index+'"></th></tr>';
+      const id_colonne = "insertQuote"+index; 
+      return '<tr><th>' + n[1].wins + '</th><th>' + n[1].looses + '</th><th id="'+id_colonne+'"></th></tr>';
     })
 
     document.getElementById("table_score").innerHTML = str.join('')
+
+    Object.entries(citation.scores).map(p => {
+      const index = arrIds.indexOf(p[1]); 
+      quoteDansDetailsScoreTableaux(p[0], index);
+    })
   }
 }
 /**
@@ -420,8 +425,9 @@ function afficherDetailsScore(citation) {
  * @param {string} n : avec le _id d'une citation 
  */
 function quoteDansDetailsScoreTableaux(n,index) {
+  
   fetchUneCitationById(n).then(data => {
-    const strDejaLa = document.getElementById("insertQuote").innerText;
+    const strDejaLa = document.getElementById("insertQuote"+index).innerText;
     const strCourte = debutQuote(data.quote)
     
     if (strDejaLa.includes(strCourte) == false) { // pour assurer qu'on n'a pas plusieurs fois le meme quote 
