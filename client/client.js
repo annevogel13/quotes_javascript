@@ -563,6 +563,7 @@ function prendsEnCompteVote(winner, looser) {
 }
 
 
+
 /* ******************************************************************
  * Gestion de la boîte de dialogue (a.k.a. modal) d'affichage de
  * l'utilisateur.

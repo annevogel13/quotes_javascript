@@ -1,31 +1,35 @@
 <html>
+
   <head>
-    <meta charset="utf-8" />
-    <title>Tests pour le projet</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+    <title>Test pour le duels de citations</title>
+    <link rel="stylesheet" href="extraCSS.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   </head>
-  <body>
-    <h1>Tests pour le projet</h1>
-    <div id="mocha"></div>
-
-    <script src="https://unpkg.com/chai/chai.js"></script>
-    <script src="https://unpkg.com/mocha/mocha.js"></script>
-
-    <!-- https://mochajs.org/#running-mocha-in-the-browser -->
-    <script class="mocha-init">
-      console.debug('Initialisation mocha');
-      mocha.setup('tdd');
-      mocha.checkLeaks();
-      // mocha.globals(['jQuery']);
-    </script>
-
-    <script src="client.js"></script>
-    <script src="LIFAP5-TP3-test.js"></script>
-
-    <script class="mocha-exec">
-      console.debug('Exécution mocha');
-      mocha.run();
-    </script>
+  <body class="center">
+    Test pour le duels de citations
+    <div >
+      <br>
+      <p>Presque tout le fonctions que j'ai implimentee sont liée à l'affichage.</p>
+        <br>
+        <list>
+          <li>affichage de l'ensemble des citations (2)</li>
+          <li>affichage d'une duel aléatoire (4)</li>
+          <li>details d'une citation (4)</li>
+          <li>filtre de citation (2)</li>
+          <li>tri du tableau des citations (4)</li>
+          <li>details Score tableau (2)</li>
+          <li>fonctionalité voter (4)</li>
+          <li>classement wins absolu (sans les tests)</li>
+        </list>
+        <p> Cette liste donne un ensemble des points de 22</p>
+        <br>
+        <p> Ci-dessous serait le teste pour le fonctionalité voter (qui est la seule qui n'est pas liee aux affichage)</p>
+        <br>
+        <button onclick="testVoter('608bf84a6a9fbe759b226795', '608bf84a6a9fbe759b226796' )">test fonctionalité "voter"</button>
+        <div id="before"> </div>
+        <div id="after"> </div>
+      
+    </div>
   </body>
+  <script src="test.js"></script>
 </html>
