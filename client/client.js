@@ -404,12 +404,12 @@ function afficherDetailsScore(citation) {
     document.getElementById("text_score").innerHTML = "Cette citation n'a pas encore participe dans une duel";
   } else {
     console.log(citation.scores)
+    const arrIds = Object.entries(citation.scores).map(p => p[1]); 
+  //  console.log(arrIds)
     const str = Object.entries(citation.scores).map(n => {
-      // met behulp van index het id van de <th> kolom 3 wijzigen
-      console.log(index)
-
-      quoteDansDetailsScoreTableaux(n[0]);
-      return '<tr><th>' + n[1].wins + '</th><th>' + n[1].looses + '</th><th id="insertQuote"></th></tr>';
+      const index = arrIds.indexOf(n[1]); // yessssss
+      quoteDansDetailsScoreTableaux(n[0], index);
+      return '<tr><th>' + n[1].wins + '</th><th>' + n[1].looses + '</th><th id="insertQuote'+index+'"></th></tr>';
     })
 
     document.getElementById("table_score").innerHTML = str.join('')
@@ -419,13 +419,13 @@ function afficherDetailsScore(citation) {
  * @brief fonction qui rempli le troisieme colone du tableaux 
  * @param {string} n : avec le _id d'une citation 
  */
-function quoteDansDetailsScoreTableaux(n) {
+function quoteDansDetailsScoreTableaux(n,index) {
   fetchUneCitationById(n).then(data => {
     const strDejaLa = document.getElementById("insertQuote").innerText;
     const strCourte = debutQuote(data.quote)
     
     if (strDejaLa.includes(strCourte) == false) { // pour assurer qu'on n'a pas plusieurs fois le meme quote 
-      document.getElementById("insertQuote").innerHTML = strDejaLa + strCourte;
+      document.getElementById("insertQuote"+index).innerHTML = strDejaLa + strCourte;
     }
 
   })
@@ -440,6 +440,7 @@ function debutQuote(quote) {
 
   const arrQuote = quote.split(" "); // convert en array comme ca on peut compter le numero de mots 
   const arrLength = arrQuote.length; // converser le longeur
+  console.log("orriginal length of quote : "+arrLength)
   const newArrLength = parseInt(0.5 * arrLength); // creer un integer pour le nouveau longeur 
   arrQuote.length = newArrLength;
   return arrQuote.join(" ")
