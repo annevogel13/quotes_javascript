@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Tests pour le projet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+  </head>
+  <body>
+    <h1>Tests pour le projet</h1>
+    <div id="mocha"></div>
+
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+
+    <!-- https://mochajs.org/#running-mocha-in-the-browser -->
+    <script class="mocha-init">
+      console.debug('Initialisation mocha');
+      mocha.setup('tdd');
+      mocha.checkLeaks();
+      // mocha.globals(['jQuery']);
+    </script>
+
+    <script src="client.js"></script>
+    <script src="LIFAP5-TP3-test.js"></script>
+
+    <script class="mocha-exec">
+      console.debug('Exécution mocha');
+      mocha.run();
+    </script>
+  </body>
+</html>
