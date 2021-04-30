@@ -396,6 +396,10 @@ function afficherDetails(id) {
   });
 }
 
+/**
+ * @function fonction qui gere l'affichage du tableau scores 
+ * @param {object} citation : object sous la forme de { ".. " : {..}, ".. ": {..}} 
+ */
 function afficherDetailsScore(citation) {
   console.log("afficher details sur le tableaux score")
 
@@ -403,35 +407,43 @@ function afficherDetailsScore(citation) {
     console.log("champs scores is undefined")
     document.getElementById("text_score").innerHTML = "Cette citation n'a pas encore participe dans une duel";
   } else {
-    console.log(citation.scores)
-    const arrIds = Object.entries(citation.scores).map(p => p[1]); 
-  //  console.log(arrIds)
-    const str = Object.entries(citation.scores).map(n => { // map pour creer le tableaux avec le troisieme collone vide 
-      const index = arrIds.indexOf(n[1]); // yessssss
-      const id_colonne = "insertQuote"+index; 
-      return '<tr><th>' + n[1].wins + '</th><th>' + n[1].looses + '</th><th id="'+id_colonne+'"></th></tr>';
-    })
-
-    document.getElementById("table_score").innerHTML = str.join('')
-
-    Object.entries(citation.scores).map(p => {
-      const index = arrIds.indexOf(p[1]); 
-      quoteDansDetailsScoreTableaux(p[0], index);
-    })
+    creerTableScores(citation);
   }
 }
+/**
+ * @brief fonction qui cree une tableau pour les scores rempli avec les wins/looses/quotes
+ * @param {object} citation : object sous la forme de { ".. " : {..}, ".. ": {..}} 
+ */
+function creerTableScores(citation) {
+
+  const arrIds = Object.entries(citation.scores).map(p => p[1]); // creer une array pour être capable de retrouver une index 
+
+  const str = Object.entries(citation.scores).map(n => { // map pour creer le tableaux avec le troisieme collone vide 
+    const index = arrIds.indexOf(n[1]); // find index of the _id in the arrIds 
+    const id_colonne = "insertQuote" + index; // creer un id pour la troisieme collone du tableaux 
+    return '<tr><th>' + n[1].wins + '</th><th>' + n[1].looses + '</th><th id="' + id_colonne + '"></th></tr>';
+  })
+
+  document.getElementById("table_score").innerHTML = str.join('')
+
+  Object.entries(citation.scores).map(p => { // ce partie va remplir le troisieme collonne du tableaux 
+    const index = arrIds.indexOf(p[1]);
+    quoteDansDetailsScoreTableaux(p[0], index);
+  })
+}
+
 /**
  * @brief fonction qui rempli le troisieme colone du tableaux 
  * @param {string} n : avec le _id d'une citation 
  */
-function quoteDansDetailsScoreTableaux(n,index) {
-  
+function quoteDansDetailsScoreTableaux(n, index) {
+
   fetchUneCitationById(n).then(data => {
-    const strDejaLa = document.getElementById("insertQuote"+index).innerText;
-    const strCourte = debutQuote(data.quote)
-    
+    const strDejaLa = document.getElementById("insertQuote" + index).innerText;
+    const strCourte = debutQuote(data.quote) // prends le moitee du quote 
+
     if (strDejaLa.includes(strCourte) == false) { // pour assurer qu'on n'a pas plusieurs fois le meme quote 
-      document.getElementById("insertQuote"+index).innerHTML = strDejaLa + strCourte;
+      document.getElementById("insertQuote" + index).innerHTML = strDejaLa + strCourte;
     }
 
   })
@@ -446,7 +458,7 @@ function debutQuote(quote) {
 
   const arrQuote = quote.split(" "); // convert en array comme ca on peut compter le numero de mots 
   const arrLength = arrQuote.length; // converser le longeur
-  console.log("orriginal length of quote : "+arrLength)
+  console.log("orriginal length of quote : " + arrLength)
   const newArrLength = parseInt(0.5 * arrLength); // creer un integer pour le nouveau longeur 
   arrQuote.length = newArrLength;
   return arrQuote.join(" ")
@@ -472,8 +484,6 @@ function modale(id) {
     }
   }
 }
-
-
 
 /////////////////////////////////////////////////////////////////////
 ///////////////////////////////random image//////////////////////////
