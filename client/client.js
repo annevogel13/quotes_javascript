@@ -215,35 +215,51 @@ function sortColoms (data, idtab, numeroSort, reverse) {
  */
 function changeLeTete (numeroSort, reverse) {
   if (numeroSort === 1) {
-    document.getElementById('r2').innerText = 'Personnage'
-    if (reverse === true) {
-      // pour inverse l'ordre de trirage
-      const newF = 'tableaux(\'table_body\', 1, false)'
-      document.getElementById('r1').setAttribute('onclick', newF)
-      // pour changer le symbole
-      document.getElementById('r1').innerText = 'Citation ↓ '
-    } else if (reverse === false) {
-      const newF1 = 'tableaux(\'table_body\', 1, true)'
-      // pour inverse l'ordre de trirage
-      document.getElementById('r1').setAttribute('onclick', newF1)
-      // pour changer le symbole
-      document.getElementById('r1').innerText = 'Citation  ↑ '
-    }
+    sortCharacter(reverse)
   } else if (numeroSort === 2) {
-    document.getElementById('r1').innerText = 'Citation '
-    if (reverse === true) {
-      const newF2 = 'tableaux(\'table_body\', 2, false)'
-      // pour inverse l'ordre de trirage
-      document.getElementById('r2').setAttribute('onclick', newF2)
-      // pour changer le symbole
-      document.getElementById('r2').innerText = 'Personnage ↓ '
-    } else if (reverse === false) {
-      const newF3 = 'tableaux(\'table_body\', 2, true)'
-      // pour inverse l'ordre de trirage
-      document.getElementById('r2').setAttribute('onclick', newF3)
-      // pour changer le symbole
-      document.getElementById('r2').innerText = 'Personnage  ↑ '
-    }
+    sortCitation(reverse)
+  }
+}
+
+/**
+ * @brief fonction qui gere le facon d'on trie les characters
+ * @param {bool} reverse : indique le facon de trie
+ */
+function sortCharacter (reverse) {
+  document.getElementById('r2').innerText = 'Personnage'
+  if (reverse === true) {
+    // pour inverse l'ordre de trirage
+    const newF = 'tableaux(\'table_body\', 1, false)'
+    document.getElementById('r1').setAttribute('onclick', newF)
+    // pour changer le symbole
+    document.getElementById('r1').innerText = 'Citation ↓ '
+  } else if (reverse === false) {
+    const newF1 = 'tableaux(\'table_body\', 1, true)'
+    // pour inverse l'ordre de trirage
+    document.getElementById('r1').setAttribute('onclick', newF1)
+    // pour changer le symbole
+    document.getElementById('r1').innerText = 'Citation  ↑ '
+  }
+}
+
+/**
+ * @brief fonction qui gere le facon d'on trie les citations
+ * @param {bool} reverse : indique le facon de trie
+ */
+function sortCitation (reverse) {
+  document.getElementById('r1').innerText = 'Citation '
+  if (reverse === true) {
+    const newF2 = 'tableaux(\'table_body\', 2, false)'
+    // pour inverse l'ordre de trirage
+    document.getElementById('r2').setAttribute('onclick', newF2)
+    // pour changer le symbole
+    document.getElementById('r2').innerText = 'Personnage ↓ '
+  } else if (reverse === false) {
+    const newF3 = 'tableaux(\'table_body\', 2, true)'
+    // pour inverse l'ordre de trirage
+    document.getElementById('r2').setAttribute('onclick', newF3)
+    // pour changer le symbole
+    document.getElementById('r2').innerText = 'Personnage  ↑ '
   }
 }
 /**
@@ -435,6 +451,7 @@ function debutQuote (quote) {
   const arrQuote = quote.split(' ')
   const arrLength = arrQuote.length // converser le longeur
   console.log('original length quote : ' + arrLength)
+  
   // creer un integer pour le nouveau longeur
   const newArrLength = parseInt(0.5 * arrLength)
   arrQuote.length = newArrLength
@@ -478,10 +495,8 @@ function selectRandomImage (data) {
   if (random1 === random2) { // verifier que on a bien deux citations differents
     selectRandomImage(data)
   } else {
-    const c1 = data[random1] // citation left
-    const c2 = data[random2] // citation right
-    creerCardHTML(1, c1)
-    creerCardHTML(2, c2)
+    const c1 = data[random1]; creerCardHTML(1, c1) // citation left
+    const c2 = data[random2]; creerCardHTML(2, c2) // citation right
 
     const DP1 = '<p class="button is-info" onclick='
     const onclick1 = '"prendsEnCompteVote(\'' + c2._id + "','" + c1._id + '\')"'
@@ -507,10 +522,12 @@ function creerCardHTML (numero, c) {
   const inverseImage = '" style="transform: scaleX(-1)" />'
   const imgInverse = '<img src="' + c.image + inverseImage
   const img = '<img src="' + c.image + '" />'
+  
   if (numero === 1) {
     if (c.characterDirection === 'Right') {
       document.getElementById('image' + numero).innerHTML = imgInverse
     } else document.getElementById('image' + numero).innerHTML = img
+
   } else if (numero === 2) {
     if (c.characterDirection === 'Left') {
       document.getElementById('image' + numero).innerHTML = imgInverse
