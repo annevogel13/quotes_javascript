@@ -390,8 +390,6 @@ function afficherDetails (id) { // utilise dans onclick function
  * @param {object} citation : object avec les citations
  */
 function afficherDetailsScore (citation) {
-  console.log('afficher details sur le tableaux score')
-
   if (citation.scores === undefined) {
     console.log('champs scores is undefined')
     const string = "Cette citation n'a pas encore participe dans une duel"
@@ -450,7 +448,6 @@ function debutQuote (quote) {
   // convert en array comme ca on peut compter le numero de mots
   const arrQuote = quote.split(' ')
   const arrLength = arrQuote.length // converser le longeur
-  console.log('original length quote : ' + arrLength)
   
   // creer un integer pour le nouveau longeur
   const newArrLength = parseInt(0.5 * arrLength)
@@ -522,12 +519,11 @@ function creerCardHTML (numero, c) {
   const inverseImage = '" style="transform: scaleX(-1)" />'
   const imgInverse = '<img src="' + c.image + inverseImage
   const img = '<img src="' + c.image + '" />'
-  
+
   if (numero === 1) {
     if (c.characterDirection === 'Right') {
       document.getElementById('image' + numero).innerHTML = imgInverse
     } else document.getElementById('image' + numero).innerHTML = img
-
   } else if (numero === 2) {
     if (c.characterDirection === 'Left') {
       document.getElementById('image' + numero).innerHTML = imgInverse
