@@ -145,7 +145,7 @@ function addClassement (data) {
     return n
   })
   // indice de "rang" est 7
-  const sortedData = newData.sort((a, b) => sortAZ(a, b, 7))
+  const sortedData = newData.sort(function (a, b) { return a[7] + b[7] })
   return sortedData
 }
 
@@ -398,6 +398,7 @@ function afficherDetailsScore (citation) {
     creerTableScores(citation)
   }
 }
+
 /**
  * @brief fonction qui cree une tableau avec les wins/looses/quotes
  * @param {object} citation : object avec les citations
