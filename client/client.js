@@ -94,12 +94,12 @@ function fetchTousCitations() {
  * 
  */
 function genererTableaux(idTab, data) { // make tableau
-
+  
   const str = data.map(n => {
     const button = '<button class="detail_button" id="' + Object.values(n)[0] + '" onclick="afficherDetails(\'' + Object.values(n)[0] + '\')">Détails</button>';
-
+    console.log(n.rang)
     // arr = [rang,  quote    , charactere, button]
-    const arr = [Object.values(n)[8], Object.values(n)[2], Object.values(n)[1], button];
+    const arr = [n.rang , Object.values(n)[2], Object.values(n)[1], button];
     return '<tr>' + creerUneLigneDansLeTableau(arr) + '</tr>';
   });
 
@@ -124,11 +124,9 @@ function creerUneLigneDansLeTableau(tab) {
 function tableaux(idtab, numeroSort, reverse) {
   fetchTousCitations().then((data) => {
 
-    selectRandomImage(data)
-    // classement functies ervoor 
-    // --> en die moeten data terugsturen zodat de rest daarmee verder kan ;-)
-    const new_data = addClassement(data);
-    sortColoms(new_data, idtab, numeroSort, reverse);
+    selectRandomImage(data) // affichage des duels 
+    const new_data = addClassement(data); // ajoute d'une champs "rang" dans une object pour changer le classement 
+    sortColoms(new_data, idtab, numeroSort, reverse); // triee les champs de facon AZ ou ZA 
     inputTirage(new_data, idtab, numeroSort); // si input champs est vide --> tous les citations 
 
   });
@@ -142,16 +140,20 @@ function tableaux(idtab, numeroSort, reverse) {
 
 function addClassement(data) {
   const new_data = data.map(n => {
-    if ((n.scores === null) || (n.scores === undefined)) {
-      n['rang'] = -100; // misschien nog iets invullen voor deze 
-    } else {
+    if (n.scores !== undefined) {
       const classement = victoiresAbsolu(n.scores);
+     // console.log(classement)
       n.rang = classement;
-    }
-
+    }else{
+      
+      n['rang'] = 0; // pas participe dans une duel donc le rang est neutre ==> 0 
+    } 
+   // console.log(n['rang'])
     return n;
   });
-
+  //console.log(Object.keys(new_data[1]));
+  //const sorted_data = new_data.sort((a, b) => sortAZ(a, b, 7)); // indice de "rang" est 7 
+  //console.log(new_data[1].rang)
   return new_data;
 }
 
@@ -161,23 +163,8 @@ function addClassement(data) {
  * @returns 
  */
 function victoiresAbsolu(scores) {
-
-  const filtered = Object.entries(scores).filter(function (x) {
-    return x !== undefined;
-  })
-
-  const winAbsolu = Object.entries(filtered).map(n => nbWinAbsolu(n));
-  return winAbsolu.reduce(total);
-
-}
-
-function ratioWinsLoses(scores) { /// NOG NIET GOED GEIMPLEMENTEERD 
-
-  const filtered = Object.entries(scores).filter(function (x) {
-    return x !== undefined;
-  })
-
-  const winAbsolu = Object.entries(filtered).map(n => ratio(n));
+  
+  const winAbsolu = Object.entries(scores).map(n => nbWinAbsolu(n));
   console.log(winAbsolu)
   return winAbsolu.reduce(total);
 
@@ -199,23 +186,13 @@ function total(total, n) {
  * @returns le nombre de victoires absolu 
  */
 function nbWinAbsolu(n) {
-  const win = Object.values(n[1])[1].wins;
-  const looses = Object.values(n[1])[1].looses;
-
+  const win = n[1].wins //Object.values(n[1])[1].wins;
+  const looses = n[1].looses// Object.values(n[1])[1].looses;
+  //console.log()
   const winAbsolu = win - looses;
 
   return winAbsolu;
 }
-
-function ratio(n) {
-  const win = Object.values(n[1])[1].wins;
-  const looses = Object.values(n[1])[1].looses;
-
-  const winAbsolu = (win - looses) / (looses - win);
-
-  return winAbsolu;
-}
-
 
 
 /////////////////////////////////////////////////////
@@ -237,7 +214,7 @@ function sortColoms(data, idtab, numeroSort, reverse) {
     changeLeTete(numeroSort, reverse);
     return new_data;
   }
-  /// dit gedeelte werkt nog niet 
+  
   if (!reverse) {
     const reverse_data = data.sort((a, b) => sortZA(a, b, numeroSort));
     genererTableaux(idtab, reverse_data);
