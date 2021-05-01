@@ -8,6 +8,9 @@ const serverUrl = "https://lifap5.univ-lyon1.fr";
  * Gestion des tabs "Voter" et "Toutes les citations"
  ******************************************************************** */
 
+
+
+/*eslint max-len: ["error", { "code": 80, "tabWidth": 4 }]*/
 /**
  * Affiche/masque les divs "div-duel" et "div-tout"
  * selon le tab indiqué dans l'état courant.
