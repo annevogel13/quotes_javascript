@@ -94,12 +94,11 @@ function fetchTousCitations() {
  * 
  */
 function genererTableaux(idTab, data) { // make tableau
-  
+
   const str = data.map(n => {
     const button = '<button class="detail_button" id="' + Object.values(n)[0] + '" onclick="afficherDetails(\'' + Object.values(n)[0] + '\')">Détails</button>';
-    console.log(n.rang)
-    // arr = [rang,  quote    , charactere, button]
-    const arr = [n.rang , Object.values(n)[2], Object.values(n)[1], button];
+
+    const arr = [n.rang, n.character, n.quote, button];
     return '<tr>' + creerUneLigneDansLeTableau(arr) + '</tr>';
   });
 
@@ -142,19 +141,16 @@ function addClassement(data) {
   const new_data = data.map(n => {
     if (n.scores !== undefined) {
       const classement = victoiresAbsolu(n.scores);
-     // console.log(classement)
       n.rang = classement;
-    }else{
-      
+    } else {
+
       n['rang'] = 0; // pas participe dans une duel donc le rang est neutre ==> 0 
-    } 
-   // console.log(n['rang'])
+    }
     return n;
   });
-  //console.log(Object.keys(new_data[1]));
-  //const sorted_data = new_data.sort((a, b) => sortAZ(a, b, 7)); // indice de "rang" est 7 
-  //console.log(new_data[1].rang)
-  return new_data;
+  
+  const sorted_data = new_data.sort((a, b) => sortAZ(a, b, 7)); // indice de "rang" est 7 
+  return sorted_data;
 }
 
 /**
@@ -163,9 +159,8 @@ function addClassement(data) {
  * @returns 
  */
 function victoiresAbsolu(scores) {
-  
+
   const winAbsolu = Object.entries(scores).map(n => nbWinAbsolu(n));
-  console.log(winAbsolu)
   return winAbsolu.reduce(total);
 
 }
@@ -188,7 +183,6 @@ function total(total, n) {
 function nbWinAbsolu(n) {
   const win = n[1].wins //Object.values(n[1])[1].wins;
   const looses = n[1].looses// Object.values(n[1])[1].looses;
-  //console.log()
   const winAbsolu = win - looses;
 
   return winAbsolu;
@@ -206,15 +200,14 @@ function nbWinAbsolu(n) {
  * @param {boolean} reverse : indiquer si on utilise AZ ou ZA 
  */
 function sortColoms(data, idtab, numeroSort, reverse) {
-  //console.log("voor : "+reverse); 
+  
   if (reverse) {
     const new_data = data.sort((a, b) => sortAZ(a, b, numeroSort));
     genererTableaux(idtab, new_data);
-
     changeLeTete(numeroSort, reverse);
     return new_data;
   }
-  
+
   if (!reverse) {
     const reverse_data = data.sort((a, b) => sortZA(a, b, numeroSort));
     genererTableaux(idtab, reverse_data);
@@ -435,7 +428,7 @@ function debutQuote(quote) {
 
   const arrQuote = quote.split(" "); // convert en array comme ca on peut compter le numero de mots 
   const arrLength = arrQuote.length; // converser le longeur
-  console.log("orriginal length of quote : " + arrLength)
+  console.log("original length of quote : " + arrLength)
   const newArrLength = parseInt(0.5 * arrLength); // creer un integer pour le nouveau longeur 
   arrQuote.length = newArrLength;
   return arrQuote.join(" ")
