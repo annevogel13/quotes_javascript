@@ -142,11 +142,22 @@ function addClassement (data) {
     } else {
       n.rang = 0 // pas participe dans une duel donc le rang est neutre ==> 0
     }
+    console.log(n.rang)
     return n
   })
   // indice de "rang" est 7
-  const sortedData = newData.sort(function (a, b) { return a[7] + b[7] })
+  const sortedData = newData.sort((a, b) => sortClassement(a, b))
   return sortedData
+}
+
+function sortClassement (a, b) {
+  const elementA = a.rang
+  const elementB = b.rang
+  if (elementA < elementB) {
+    return 1
+  } else if (elementA > elementB) {
+    return -1
+  }
 }
 
 /**
@@ -449,11 +460,14 @@ function debutQuote (quote) {
   // convert en array comme ca on peut compter le numero de mots
   const arrQuote = quote.split(' ')
   const arrLength = arrQuote.length // converser le longeur
-  
-  // creer un integer pour le nouveau longeur
-  const newArrLength = parseInt(0.5 * arrLength)
-  arrQuote.length = newArrLength
-  return arrQuote.join(' ')
+  if (arrLength < 7) { // si le quote est deja courte
+    return arrQuote.join(' ')
+  } else {
+    // creer un integer pour le nouveau longeur
+    const newArrLength = parseInt(0.5 * arrLength)
+    arrQuote.length = newArrLength
+    return arrQuote.join(' ')
+  }
 }
 
 /**
