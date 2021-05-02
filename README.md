@@ -10,4 +10,4 @@ fonctionalité fait:
 * vote (4 points) 
 
 
-totale 22 points 
+lifaptotale 22 points 
