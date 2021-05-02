@@ -8,7 +8,6 @@ const serverUrl = 'https://lifap5.univ-lyon1.fr'
  * Gestion des tabs "Voter" et "Toutes les citations"
  ******************************************************************** */
 
-/* eslint max-len: ["error", { "code": 80, "tabWidth": 4 }] */
 /**
  * Affiche/masque les divs "div-duel" et "div-tout"
  * selon le tab indiqué dans l'état courant.
@@ -66,9 +65,9 @@ function registerTabClick (etatCourant) {
     clickTab('tout', etatCourant)
 }
 
-/// //////////////////////////////////////////////////////////////////
-/// //// affichage de l'ensemble des citations du serveur 1 /////////
-/// /////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
+/// //// affichage de l'ensemble des citations du serveur /////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 
 /**
  * @brief Fait une requête GET authentifiée sur /citations
@@ -87,11 +86,11 @@ function fetchTousCitations () {
 }
 
 /**
- * @brief transforms the data in a string which in html is a table
+ * @brief ecrit le code pour le table de html
  * @param {string} idTab
  *
  */
-function genererTableaux (idTab, data) { // make tableau
+function genererTableaux (idTab, data) { // ecrit le tableau
   const str = data.map(n => {
     const p1 = '<button class="detail_button" id="'
     const p2 = '" onclick="afficherDetails(\''
@@ -106,16 +105,16 @@ function genererTableaux (idTab, data) { // make tableau
 }
 
 /**
- * @brief creates a string with html-code
+ * @brief ecrit le code pour une case dans le ligne
  * @param {string} tab
- * @returns a string with the html-code for a case in a row
+ * @returns une chaine de caractere avec le code html
  */
 function creerUneLigneDansLeTableau (tab) {
   return tab.map(n => '<th>' + n + '</th>').join('')
 }
 
 /**
- * @brief fonction qui gerer le tableau de citations
+ * @brief fonction qui gerer le tableau de citations avec les functionalites
  * @param {identifier} idtab : l'id du <table-body>
  */
 function tableaux (idtab, numeroSort, reverse) {
@@ -130,10 +129,15 @@ function tableaux (idtab, numeroSort, reverse) {
   })
 }
 
-/// //////////////////////////////////////////////////////////////////
-/// //////// functions des classements ///////////////////////////////
-/// //////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
+/// //////// functions des classements/rang ///////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief fonction qui ajoute un rang aux object pour le classement
+ * @param {object} data : object avec tout les citations
+ * @returns object data avec pour chaque citation une champ rang ajoute
+ */
 function addClassement (data) {
   const newData = data.map(n => {
     if (n.scores !== undefined) {
@@ -142,28 +146,35 @@ function addClassement (data) {
     } else {
       n.rang = 0 // pas participe dans une duel donc le rang est neutre ==> 0
     }
-    console.log(n.rang)
     return n
   })
-  // indice de "rang" est 7
+  
   const sortedData = newData.sort((a, b) => sortClassement(a, b))
+  document.getElementById('r1').innerText = 'Citation'
+  document.getElementById('r2').innerText = 'Personnage'
   return sortedData
 }
 
+/**
+ * @brief fonction qui aide le sort() pour le classement
+ * @param {object} a : une citation
+ * @param {object} b : une citation
+ * @returns -1,1 en fonction de quelle rang est plus petit/grand
+ */
 function sortClassement (a, b) {
   const elementA = a.rang
   const elementB = b.rang
   if (elementA < elementB) {
     return 1
-  } else if (elementA > elementB) {
+  } else if (elementA >= elementB) {
     return -1
   }
 }
 
 /**
- *
+ * @brief function qui utilise le reduce pour calculer le numero de win absolu
  * @param {object} scores : object sous la forme de { "..." : {...}, }
- * @returns
+ * @returns une nombre qui represente le numero de win absolu
  */
 function victoiresAbsolu (scores) {
   const winAbsolu = Object.entries(scores).map(n => nbWinAbsolu(n))
@@ -193,9 +204,9 @@ function nbWinAbsolu (n) {
   return winAbsolu
 }
 
-/// //////////////////////////////////////////////////
-/// ///////// trie tableaux /////////////////////////
-/// ////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
+/// ///////// tri du tableau des citations/////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 /**
  *
  * @param {object} data : tous les citations
@@ -260,19 +271,22 @@ function sortCharacter (reverse) {
 function sortCitation (reverse) {
   document.getElementById('r1').innerText = 'Citation '
   if (reverse === true) {
-    const newF2 = 'tableaux(\'table_body\', 2, false)'
     // pour inverse l'ordre de trirage
+    const newF2 = 'tableaux(\'table_body\', 2, false)'
     document.getElementById('r2').setAttribute('onclick', newF2)
+
     // pour changer le symbole
     document.getElementById('r2').innerText = 'Personnage ↓ '
   } else if (reverse === false) {
-    const newF3 = 'tableaux(\'table_body\', 2, true)'
     // pour inverse l'ordre de trirage
+    const newF3 = 'tableaux(\'table_body\', 2, true)'
     document.getElementById('r2').setAttribute('onclick', newF3)
+
     // pour changer le symbole
     document.getElementById('r2').innerText = 'Personnage  ↑ '
   }
 }
+
 /**
  * @brief aide dans le sort() de triee les objects
  * @param {object} a
@@ -309,9 +323,9 @@ function sortZA (a, b, numero) {
   } else return 0
 }
 
-/// ///////////////////////////////////////////////////
-/// ////////// tirage avec champs (input) /////////////
-/// ///////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
+/// ////////// filtre de citation /////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 
 /**
  * @brief fonction qui gere le tirage au fonction des champs input
@@ -350,9 +364,9 @@ function checkAppearence (singleObject, inputText, numero) {
   }
 }
 
-/// /////////////////////////////////////////////////////
-/// ///////// details d'une citation ////////////////////
-/// /////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
+/// ///////// details d'une citation //////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 
 /**
  * Fait une requête GET authentifiée sur /citations/id
@@ -491,13 +505,13 @@ function modale (id) {
   }
 }
 
-/// //////////////////////////////////////////////////////////////////
-/// ////////////////////////////random image//////////////////////////
-/// //////////////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
+/// ///////////Affichage d’un duel aléatoire///////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 
 /**
  * @brief fonction qui select deux citation pour afficher dans le duel
- * @param {object} data : sous la forme de
+ * @param {object} data : object avec tous les citations
  */
 function selectRandomImage (data) {
   const nbCitations = data.length
@@ -546,9 +560,9 @@ function creerCardHTML (numero, c) {
   }
 }
 
-/// ///////////////////////////////////////////////
-/// ///////////// fonctionalite voter ////////////
-/// //////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
+/// ///////////// Vote ////////////////////////////////////////////////////////
+/// ///////////////////////////////////////////////////////////////////////////
 
 /**
  * @brief fonction qui envoie le resultat du vote aux serveur
@@ -567,7 +581,7 @@ function prendsEnCompteVote (winner, looser) { // onclick function
     })
   })
 
-  tableaux('table_body')
+  tableaux('table_body') // mettre a jour le tablaux
 }
 
 /* ******************************************************************
