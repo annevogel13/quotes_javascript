@@ -1,4 +1,6 @@
-lancer eslint : npx eslint client\client.js
+** project LIFAP5 citations **
+
+* p1905532, Anne de Jong * 
 
 fonctionalité fait: 
 * affichage de l'ensemble des citations (2 points)
@@ -11,3 +13,5 @@ fonctionalité fait:
 
 
 totale 22 points 
+
+lancer eslint : npx eslint client\client.js
