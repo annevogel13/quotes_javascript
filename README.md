@@ -10,3 +10,4 @@ fonctionalité fait:
 <li>details Score tableau (2 points )</li> 
 <li>vote (4 points)</li> 
 </list>
+totale 22 points 
