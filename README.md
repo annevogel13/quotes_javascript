@@ -15,4 +15,4 @@ totale 22 points
 ###### Lancer le eslint : 
 Avant de pouvoir excuter cette comande, npm et eslint doit être installee et configure 
 
-lifaptotale 22 points 
+npx eslint client/client.js
