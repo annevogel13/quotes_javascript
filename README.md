@@ -8,4 +8,6 @@ fonctionalité fait:
 * tri du tableau des citations (4 points)
 * details Score tableau (2 points ) 
 * vote (4 points) 
+
+
 totale 22 points 
