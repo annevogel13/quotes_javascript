@@ -1,5 +1,6 @@
 suite('Tests pour la function vote', function () {
     test("On vérifie si le resultat d'une duel est bien pris en compte", function () {
+        
         fetchTousCitations().then(data => {
             citation1 = data[12];
             citation2 = data[13];
